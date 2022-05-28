@@ -15,6 +15,7 @@ import {
     FormErrorMessage as ChakraFormErrorMessage,
     FormControl,
     FormControlProps,
+    HStack,
 } from '@chakra-ui/react'
 
 type Stylable = HTMLChakraProps<'div'>
@@ -127,7 +128,7 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
 }) => {
     return (
         <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
-            <Stack alignItems="center">
+            <HStack alignItems="center">
                 <Checkbox
                     id={name}
                     name={name}
@@ -138,7 +139,7 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
                 {label || helper ? (
                     <FormLabel userSelect="none" label={label} name={name} />
                 ) : null}
-            </Stack>
+            </HStack>
             <FormError error={error} />
         </Stack>
     )
@@ -155,7 +156,7 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
 }) => {
     return (
         <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
-            <Stack alignItems="center">
+            <HStack alignItems="center">
                 <Radio
                     id={`${value}`}
                     name={name}
@@ -171,7 +172,7 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
                         name={`${value}`}
                     />
                 ) : null}
-            </Stack>
+            </HStack>
             <FormError error={error} />
         </Stack>
     )
