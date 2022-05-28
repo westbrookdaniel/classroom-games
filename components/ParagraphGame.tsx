@@ -1,19 +1,20 @@
 import * as React from 'react'
-import { VStack, Text, Button } from '@chakra-ui/react'
+import { VStack, Text, Portal, Button } from '@chakra-ui/react'
 import { plural } from '../utils/plural'
 import Health from './Health'
 import TokenParagraph from './TokenParagraph'
 import { Modal } from './Modal'
 import useStoreAnswers from '../utils/useStoreAnswers'
+import ReactConfetti from 'react-confetti'
 
 export default function ParagraphGame() {
     const { answers, isAllCorrect } = useStoreAnswers()
 
-    const [shouldOpenModal, setShouldOpenModal] = React.useState(false)
+    const [hasWon, setHasWon] = React.useState(false)
 
     React.useEffect(() => {
         if (!isAllCorrect) return
-        setTimeout(() => setShouldOpenModal(true), 1800)
+        setTimeout(() => setHasWon(true), 1800)
     }, [isAllCorrect])
 
     return (
@@ -33,12 +34,19 @@ export default function ParagraphGame() {
             </VStack>
             <Health />
             <Modal
-                openWhen={shouldOpenModal}
+                openWhen={hasWon}
                 header="Well done, you found all the errors!"
-                footer={({ onClose }) => (
-                    <Button variant="outline" onClick={onClose}>
-                        Close
-                    </Button>
+                footer={({ onClose, isOpen }) => (
+                    <>
+                        {isOpen ? (
+                            <Portal>
+                                <ReactConfetti />
+                            </Portal>
+                        ) : null}
+                        <Button variant="outline" onClick={onClose}>
+                            Close
+                        </Button>
+                    </>
                 )}
             ></Modal>
         </VStack>
