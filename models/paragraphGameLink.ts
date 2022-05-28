@@ -15,7 +15,7 @@ export type CreateLinkProps = Pick<
 export function createLink({ code, paragraph, hideCreate }: CreateLinkProps) {
     return prisma.paragraphGameLink.create({
         data: {
-            code,
+            code: code !== '' ? code : undefined,
             paragraph,
             hideCreate,
         },
