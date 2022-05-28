@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getLinkByCode } from '../../../../models/paragraphGameLink'
 
 export interface ResponseData {
-    data?: ParagraphGameLink
+    data?: Omit<ParagraphGameLink, 'createdAt'> & { createdAt: string }
     error?: string
 }
 
