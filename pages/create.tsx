@@ -5,8 +5,6 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormCheckbox, FormInput, FormTextArea } from '../components/Form'
-import { useStore } from '../store'
-import { useRouter } from 'next/router'
 
 interface FormValues {
     paragraph: string
@@ -15,9 +13,6 @@ interface FormValues {
 }
 
 const Create: NextPage = () => {
-    const router = useRouter()
-    const setParagraph = useStore((s) => s.setParagraph)
-
     const {
         register,
         handleSubmit,
@@ -30,7 +25,11 @@ const Create: NextPage = () => {
         hideCreate,
     }) => {
         const encodedParagraph = btoa(paragraph)
-        router.push('/')
+        console.log({
+            paragraph: encodedParagraph,
+            code,
+            hideCreate,
+        })
     }
 
     return (

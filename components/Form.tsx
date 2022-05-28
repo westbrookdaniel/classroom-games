@@ -118,14 +118,13 @@ export const FormInput = React.forwardRef<
     )
 })
 
-export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
-    label,
-    helper,
-    error,
-    name,
-    formControlProps,
-    ...props
-}) => {
+export const FormCheckbox = React.forwardRef<
+    HTMLInputElement,
+    FormElementsProps & CheckboxProps
+>(function FormCheckbox(
+    { label, helper, error, name, formControlProps, ...props },
+    ref
+) {
     return (
         <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
             <HStack alignItems="center">
@@ -134,6 +133,7 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
                     name={name}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={`${name}-error`}
+                    ref={ref}
                     {...props}
                 />
                 {label || helper ? (
@@ -143,17 +143,15 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
             <FormError error={error} />
         </Stack>
     )
-}
+})
 
-export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
-    label,
-    helper,
-    error,
-    name,
-    formControlProps,
-    value,
-    ...props
-}) => {
+export const FormRadio = React.forwardRef<
+    HTMLInputElement,
+    FormElementsProps & RadioProps
+>(function FormRadio(
+    { label, helper, error, name, formControlProps, value, ...props },
+    ref
+) {
     return (
         <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
             <HStack alignItems="center">
@@ -163,6 +161,7 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
                     aria-invalid={error ? true : undefined}
                     aria-describedby={`${name}-error`}
                     value={value}
+                    ref={ref}
                     {...props}
                 />
                 {label || helper ? (
@@ -176,4 +175,4 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
             <FormError error={error} />
         </Stack>
     )
-}
+})
