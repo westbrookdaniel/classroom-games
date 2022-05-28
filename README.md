@@ -5,8 +5,6 @@ This is a Next.js/Prisma/Chakra UI app. Currently just a paragraph game.
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
