@@ -9,16 +9,24 @@ export interface TokenState {
 }
 
 export interface State {
+    health: number
     paragraph: string
     tokenMap: Record<string, TokenState>
+    subtractHealth: () => void
     setParagraph: (paragraph: string) => void
     setTokenGuess: (id: number, guess: string) => void
 }
 
 export const useStore = create(
     immer<State>((set) => ({
+        health: 3,
         paragraph: '',
         tokenMap: {},
+        subtractHealth: () =>
+            set((state) => {
+                state.health -= 1
+                return state
+            }),
         setParagraph: (paragraph: string) => {
             const tokens = paragraph.split(/([ .,?:;!'])/)
             const tokenMap: Record<string, TokenState> = {}

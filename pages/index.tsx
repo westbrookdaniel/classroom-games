@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { Flex } from '@chakra-ui/react'
+import { Flex, VStack } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import TokenParagraph from '../components/TokenParagraph'
 import { useStore } from '../store'
+import Health from '../components/Health'
 
 useStore
     .getState()
@@ -25,7 +26,10 @@ const Home: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <TokenParagraph />
+            <VStack spacing={8}>
+                <TokenParagraph />
+                <Health />
+            </VStack>
         </Flex>
     )
 }
