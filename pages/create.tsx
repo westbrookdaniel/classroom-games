@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Link from 'next/link'
 import {
     Button,
     Text,
@@ -12,7 +11,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormCheckbox, FormInput, FormTextArea } from '../components/Form'
-import { createLink } from '../api/paragraphGameLink'
+import { createLink } from '../utils/paragraphGameLink'
 import { CopyLink } from '../components/CopyLink'
 import { useRouter } from 'next/router'
 
