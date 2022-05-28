@@ -1,10 +1,14 @@
 import type { ParagraphGameLink } from '@prisma/client'
 import { prisma } from '../utils/db'
 
-export function getLinkByCode({ code }: Pick<ParagraphGameLink, 'code'>) {
-    return prisma.paragraphGameLink.findFirst({
+export async function getLinkByCode({ code }: Pick<ParagraphGameLink, 'code'>) {
+    const link = await prisma.paragraphGameLink.findFirst({
         where: { code },
     })
+    return {
+        ...link,
+        createdAt: link?.createdAt.toUTCString(),
+    }
 }
 
 export type CreateLinkProps = Pick<

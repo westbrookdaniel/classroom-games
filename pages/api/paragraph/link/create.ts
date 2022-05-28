@@ -16,13 +16,16 @@ export default async function handler(
 
     const { code, paragraph, hideCreate } = JSON.parse(req.body)
 
-    console.log(req.body.paragraph)
-
     if (typeof paragraph !== 'string')
         return res.status(400).send({ error: 'paragraph is not valid' })
 
     if (typeof code !== 'string')
         return res.status(400).send({ error: 'code is not valid' })
+
+    if (code === 'create')
+        return res
+            .status(400)
+            .send({ error: 'create can not be used as a code' })
 
     if (typeof hideCreate !== 'boolean')
         return res.status(400).send({ error: 'hideCreate is not valid' })

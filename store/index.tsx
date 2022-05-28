@@ -44,10 +44,3 @@ export const useStore = create(
             }),
     }))
 )
-
-// Setup the initial data
-useStore
-    .getState()
-    .setParagraph(
-        'This is a very nomal{normal} looking paragraph, or so I believe.'
-    )
