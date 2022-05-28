@@ -1,7 +1,13 @@
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import * as React from 'react'
+import { Flex } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import TokenParagraph from '../components/TokenParagraph'
+import { useStore } from '../store'
+
+useStore
+    .getState()
+    .setParagraph('This is a very nomal looking paragraph, or so I believe.')
 
 const Home: NextPage = () => {
     return (

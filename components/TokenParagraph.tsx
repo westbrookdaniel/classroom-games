@@ -1,10 +1,15 @@
 import { Text } from '@chakra-ui/react'
+import { useStore } from '../store'
 import Token from './Token'
 
-const paragraph = 'This is a very nomal looking paragraph, or so I believe.'
-
 export default function TokenParagraph() {
-    const stringTokens = paragraph.split(/([ .,?:;!'])/)
-    const tokens = stringTokens.map((t, i) => <Token key={i} text={t} />)
-    return <Text as="div" fontSize="xl">{tokens}</Text>
+    const tokenMap = useStore((s) => s.tokenMap)
+    const tokens = Object.values(tokenMap).map((token, i) => (
+        <Token key={i} token={token} />
+    ))
+    return (
+        <Text as="div" fontSize="xl">
+            {tokens}
+        </Text>
+    )
 }

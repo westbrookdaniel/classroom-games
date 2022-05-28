@@ -1,18 +1,19 @@
 import { PopoverTrigger, Text, Tooltip, useTheme } from '@chakra-ui/react'
-import { TokenForm } from './TokenForm'
+import { TokenState } from '../store'
+import { TokenFormPopover } from './TokenFormPopover'
 
 interface Props {
-    text: string
+    token: TokenState
 }
 
-export default function Token({ text }: Props) {
+export default function Token({ token: { value } }: Props) {
     const theme = useTheme()
     const transperant = `${theme.colors.gray[200]}90`
     return (
-        <TokenForm tokenText={text}>
+        <TokenFormPopover tokenText={value}>
             {({ onToggle, isOpen }) => (
                 <Tooltip
-                    label={text}
+                    label={value}
                     minH="1.8em"
                     placement="top"
                     px={3}
@@ -35,12 +36,12 @@ export default function Token({ text }: Props) {
                                     borderRadius: 'sm',
                                 }}
                             >
-                                {text}
+                                {value}
                             </Text>
                         </PopoverTrigger>
                     </Text>
                 </Tooltip>
             )}
-        </TokenForm>
+        </TokenFormPopover>
     )
 }

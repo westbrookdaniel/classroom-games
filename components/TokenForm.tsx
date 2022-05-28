@@ -1,16 +1,5 @@
-import {
-    Stack,
-    ButtonGroup,
-    Button,
-    useDisclosure,
-    Popover,
-    PopoverContent,
-    PopoverArrow,
-    PopoverCloseButton,
-    useMergeRefs,
-} from '@chakra-ui/react'
-import * as React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useMergeRefs, Stack, ButtonGroup, Button } from '@chakra-ui/react'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { FormInput } from './Form'
 
 interface FormProps {
@@ -24,7 +13,12 @@ interface FormValues {
     guess: string
 }
 
-const Form = ({ onSuccess, onCancel, tokenText, initialRef }: FormProps) => {
+export function TokenForm({
+    onSuccess,
+    onCancel,
+    tokenText,
+    initialRef,
+}: FormProps) {
     const {
         register,
         handleSubmit,
@@ -68,39 +62,5 @@ const Form = ({ onSuccess, onCancel, tokenText, initialRef }: FormProps) => {
                 </Button>
             </ButtonGroup>
         </Stack>
-    )
-}
-
-interface PopoverProps {
-    children: (disclosure: ReturnType<typeof useDisclosure>) => React.ReactNode
-    tokenText: string
-}
-
-export const TokenForm = ({ children, tokenText }: PopoverProps) => {
-    const disclosure = useDisclosure()
-    const { onClose, isOpen } = disclosure
-
-    const initialRef = React.useRef<HTMLInputElement | null>(null)
-
-    return (
-        <Popover
-            isOpen={isOpen}
-            onClose={onClose}
-            placement="top"
-            isLazy={true}
-            initialFocusRef={initialRef}
-        >
-            {children(disclosure)}
-            <PopoverContent boxShadow="xl" zIndex={999} p={5}>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <Form
-                    initialRef={initialRef}
-                    onCancel={onClose}
-                    tokenText={tokenText}
-                    onSuccess={onClose}
-                />
-            </PopoverContent>
-        </Popover>
     )
 }
