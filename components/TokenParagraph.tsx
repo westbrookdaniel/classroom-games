@@ -7,7 +7,7 @@ export default function TokenParagraph() {
         s.tokenMap,
         s.subtractHealth,
     ])
-    const tokens = Object.values(tokenMap).map((token, i) => {
+    const tokens = Object.values(tokenMap).map((token) => {
         if (!token.answer) {
             return (
                 <Token key={token.id} token={token} onClick={subtractHealth} />

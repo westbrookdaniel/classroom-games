@@ -13,7 +13,9 @@ export const TokenDisplay = React.forwardRef<HTMLParagraphElement, Props>(
         const transperantGray = `${theme.colors.gray[200]}90`
         const transperantGreen = `${theme.colors.green[200]}90`
 
-        if (token.guess) {
+        const latestGuess = token.guess[token.guess.length - 1]
+
+        if (token.isCorrect) {
             return (
                 <Text
                     ref={ref}
@@ -24,7 +26,7 @@ export const TokenDisplay = React.forwardRef<HTMLParagraphElement, Props>(
                     outline="0.2em solid"
                     borderRadius="sm"
                 >
-                    {token.guess}
+                    {latestGuess}
                 </Text>
             )
         }

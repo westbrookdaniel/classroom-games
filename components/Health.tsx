@@ -8,9 +8,11 @@ export default function Health() {
     return (
         <HStack>
             {health === 0 ? <p>{"You're out of lives!"}</p> : null}
-            {new Array(health).fill(null).map((_, i) => (
-                <p key={i}>{'<3'}</p>
-            ))}
+            {health > 0
+                ? new Array(health)
+                      .fill(null)
+                      .map((_, i) => <p key={i}>{'<3'}</p>)
+                : null}
         </HStack>
     )
 }

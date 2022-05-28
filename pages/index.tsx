@@ -8,7 +8,9 @@ import Health from '../components/Health'
 
 useStore
     .getState()
-    .setParagraph('This is a very nomal looking paragraph, or so I believe.')
+    .setParagraph('This is a very nomal looking paragraph, or so I believe.', {
+        [8]: 'normal',
+    })
 
 const Home: NextPage = () => {
     return (

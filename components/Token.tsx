@@ -43,7 +43,7 @@ export function Token({
             py={1}
             background="purple.700"
             fontSize="xl"
-            display={disableTooltip || token.guess ? 'none' : undefined}
+            display={disableTooltip ? 'none' : undefined}
         >
             <Text as="span">
                 {children ? (
