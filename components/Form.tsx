@@ -43,16 +43,12 @@ export const FormHelper: React.FC<FormHelperProps> = ({ helper }) => {
     ) : null
 }
 
-interface FormErrorProps extends Stylable, Pick<InputProps, 'name'> {
+interface FormErrorProps extends Stylable {
     error?: string | boolean
 }
 
-export const FormError: React.FC<FormErrorProps> = ({ error, name }) => {
-    return typeof error === 'string' ? (
-        <ChakraFormErrorMessage m={0} id={`${name}-error`}>
-            {error}
-        </ChakraFormErrorMessage>
-    ) : null
+export const FormError: React.FC<FormErrorProps> = ({ error }) => {
+    return <ChakraFormErrorMessage>{error}</ChakraFormErrorMessage>
 }
 
 interface FormElementsProps
@@ -71,7 +67,7 @@ export const FormElements: React.FC<FormElementsProps> = ({
     formControlProps,
 }) => {
     return (
-        <FormControl {...formControlProps}>
+        <FormControl isInvalid={!!error} {...formControlProps}>
             {label || helper ? (
                 <Stack spacing={1} mb={2}>
                     <FormLabel label={label} name={name} />
@@ -79,7 +75,7 @@ export const FormElements: React.FC<FormElementsProps> = ({
                 </Stack>
             ) : null}
             {children}
-            <FormError mb={2} error={error} name={name} />
+            <FormError error={error} />
         </FormControl>
     )
 }
@@ -100,14 +96,7 @@ export const FormTextArea: React.FC<FormElementsProps & TextareaProps> = ({
             label={label}
             name={name}
         >
-            <Textarea
-                id={name}
-                name={name}
-                aria-invalid={error ? true : undefined}
-                aria-describedby={`${name}-error`}
-                w="full"
-                {...props}
-            />
+            <Textarea id={name} name={name} w="full" {...props} />
         </FormElements>
     )
 }
@@ -127,15 +116,7 @@ export const FormInput = React.forwardRef<
             label={label}
             name={name}
         >
-            <Input
-                id={name}
-                name={name}
-                aria-invalid={error ? true : undefined}
-                aria-describedby={`${name}-error`}
-                w="full"
-                ref={ref}
-                {...props}
-            />
+            <Input id={name} name={name} w="full" ref={ref} {...props} />
         </FormElements>
     )
 })
@@ -145,10 +126,11 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
     helper,
     error,
     name,
+    formControlProps,
     ...props
 }) => {
     return (
-        <Stack>
+        <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
             <Stack alignItems="center">
                 <Checkbox
                     id={name}
@@ -161,7 +143,7 @@ export const FormCheckbox: React.FC<FormElementsProps & CheckboxProps> = ({
                     <FormLabel userSelect="none" label={label} name={name} />
                 ) : null}
             </Stack>
-            <FormError mt={2} error={error} name={name} />
+            <FormError error={error} />
         </Stack>
     )
 }
@@ -171,15 +153,15 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
     helper,
     error,
     name,
-    value: v,
+    formControlProps,
+    value,
     ...props
 }) => {
-    const value = v as string
     return (
-        <Stack>
+        <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
             <Stack alignItems="center">
                 <Radio
-                    id={value}
+                    id={`${value}`}
                     name={name}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={`${name}-error`}
@@ -187,10 +169,14 @@ export const FormRadio: React.FC<FormElementsProps & RadioProps> = ({
                     {...props}
                 />
                 {label || helper ? (
-                    <FormLabel userSelect="none" label={label} name={value} />
+                    <FormLabel
+                        userSelect="none"
+                        label={label}
+                        name={`${value}`}
+                    />
                 ) : null}
             </Stack>
-            <FormError mt={2} error={error} name={value} />
+            <FormError error={error} />
         </Stack>
     )
 }

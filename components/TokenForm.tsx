@@ -31,7 +31,9 @@ const Form = ({ onSuccess, onCancel, tokenText, initialRef }: FormProps) => {
         formState: { isSubmitting, errors },
     } = useForm<FormValues>()
 
-    const { ref, ...guessProps } = register('guess', { required: true })
+    const { ref, ...guessProps } = register('guess', {
+        required: 'Guess is required',
+    })
     const refs = useMergeRefs(ref, initialRef)
 
     const onSubmit: SubmitHandler<FormValues> = () => {
@@ -48,7 +50,7 @@ const Form = ({ onSuccess, onCancel, tokenText, initialRef }: FormProps) => {
             <FormInput
                 label="What should this say?"
                 helper={`It currently says: "${tokenText}"`}
-                error={errors.guess?.message || 'A guess is required'}
+                error={errors.guess?.message}
                 formControlProps={{ isRequired: true }}
                 ref={refs}
                 {...guessProps}
@@ -60,7 +62,7 @@ const Form = ({ onSuccess, onCancel, tokenText, initialRef }: FormProps) => {
                 <Button
                     type="submit"
                     isLoading={isSubmitting}
-                    colorScheme="purple"
+                    colorScheme="green"
                 >
                     Save
                 </Button>
@@ -89,7 +91,7 @@ export const TokenForm = ({ children, tokenText }: PopoverProps) => {
             initialFocusRef={initialRef}
         >
             {children(disclosure)}
-            <PopoverContent zIndex={999} p={5}>
+            <PopoverContent boxShadow="xl" zIndex={999} p={5}>
                 <PopoverArrow />
                 <PopoverCloseButton />
                 <Form
