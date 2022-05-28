@@ -1,23 +1,20 @@
 import * as React from 'react'
 import { VStack, Text, Button } from '@chakra-ui/react'
-import { useStore } from '../store'
 import { plural } from '../utils/plural'
 import Health from './Health'
 import TokenParagraph from './TokenParagraph'
 import { Modal } from './Modal'
+import useStoreAnswers from '../utils/useStoreAnswers'
 
 export default function ParagraphGame() {
-    const answers = useStore((s) =>
-        Object.values(s.tokenMap).filter((s) => s.answer)
-    )
+    const { answers, isAllCorrect } = useStoreAnswers()
 
     const [shouldOpenModal, setShouldOpenModal] = React.useState(false)
-    const allCorrect = answers.every((a) => a.isCorrect)
 
     React.useEffect(() => {
-        if (!allCorrect) return
+        if (!isAllCorrect) return
         setTimeout(() => setShouldOpenModal(true), 1800)
-    }, [allCorrect])
+    }, [isAllCorrect])
 
     return (
         <VStack spacing={16}>

@@ -7,9 +7,10 @@ import { Tooltip } from './Tooltip'
 
 interface TokenWithForm {
     token: TokenState
+    isDisabled?: boolean
 }
 
-export function TokenWithForm({ token }: TokenWithForm) {
+export function TokenWithForm({ token, isDisabled }: TokenWithForm) {
     const [showTooltip, setShowTooltip] = React.useState(false)
 
     React.useEffect(() => {
@@ -25,9 +26,14 @@ export function TokenWithForm({ token }: TokenWithForm) {
                     isTooltipOpen={showTooltip ? true : undefined}
                     disableTooltip={isOpen}
                     token={token}
+                    isDisabled={isDisabled}
                 >
                     <PopoverTrigger>
-                        <TokenDisplay onClick={onToggle} token={token} />
+                        <TokenDisplay
+                            isDisabled={isDisabled}
+                            onClick={onToggle}
+                            token={token}
+                        />
                     </PopoverTrigger>
                 </Token>
             )}
@@ -41,6 +47,7 @@ interface TokenProps {
     disableTooltip?: boolean
     isTooltipOpen?: boolean
     children?: React.ReactNode
+    isDisabled?: boolean
 }
 
 export function Token({
@@ -49,19 +56,25 @@ export function Token({
     onClick,
     children,
     isTooltipOpen,
+    isDisabled,
 }: TokenProps) {
     return (
         <Tooltip
             label={token.isCorrect ? 'Correct!' : token.value}
             background={token.isCorrect ? 'green.500' : 'purple.700'}
-            display={disableTooltip ? 'none' : undefined}
+            display={isDisabled || disableTooltip ? 'none' : undefined}
             isOpen={isTooltipOpen}
+            isDisabled={isDisabled}
         >
             <Text as="span">
                 {children ? (
                     children
                 ) : (
-                    <TokenDisplay onClick={onClick} token={token} />
+                    <TokenDisplay
+                        isDisabled={isDisabled}
+                        onClick={onClick}
+                        token={token}
+                    />
                 )}
             </Text>
         </Tooltip>

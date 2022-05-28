@@ -1,20 +1,37 @@
 import { Text } from '@chakra-ui/react'
 import { useStore } from '../store'
+import useStoreAnswers from '../utils/useStoreAnswers'
 import { Token, TokenWithForm } from './Token'
 
 export default function TokenParagraph() {
-    const [tokenMap, subtractHealth] = useStore((s) => [
+    const [tokenMap, subtractHealth, hasNoHealth] = useStore((s) => [
         s.tokenMap,
         s.subtractHealth,
+        s.health === 0,
     ])
+
+    const { isAllCorrect } = useStoreAnswers()
+
+    const isDisabled = hasNoHealth || isAllCorrect
 
     const tokens = Object.values(tokenMap).map((token) => {
         if (!token.answer) {
             return (
-                <Token key={token.id} token={token} onClick={subtractHealth} />
+                <Token
+                    isDisabled={isDisabled}
+                    key={token.id}
+                    token={token}
+                    onClick={subtractHealth}
+                />
             )
         }
-        return <TokenWithForm key={token.id} token={token} />
+        return (
+            <TokenWithForm
+                isDisabled={isDisabled}
+                key={token.id}
+                token={token}
+            />
+        )
     })
 
     return (
