@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { PopoverTrigger, Text } from '@chakra-ui/react'
-import { TokenState, useStore } from '../store'
+import { TokenState } from '../store'
 import { TokenDisplay } from './TokenDisplay'
 import { TokenFormPopover } from './TokenFormPopover'
 import { Tooltip } from './Tooltip'
@@ -15,8 +15,7 @@ export function TokenWithForm({ token }: TokenWithForm) {
     React.useEffect(() => {
         if (!token.isCorrect) return
         setShowTooltip(true)
-        const timeout = setTimeout(() => setShowTooltip(false), 1500)
-        return () => clearTimeout(timeout)
+        setTimeout(() => setShowTooltip(false), 1500)
     }, [token.isCorrect])
 
     return (

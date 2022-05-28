@@ -7,6 +7,7 @@ export default function TokenParagraph() {
         s.tokenMap,
         s.subtractHealth,
     ])
+
     const tokens = Object.values(tokenMap).map((token) => {
         if (!token.answer) {
             return (
@@ -15,6 +16,7 @@ export default function TokenParagraph() {
         }
         return <TokenWithForm key={token.id} token={token} />
     })
+
     return (
         <Text as="div" fontSize="xl">
             {tokens}

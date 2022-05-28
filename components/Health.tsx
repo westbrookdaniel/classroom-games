@@ -8,14 +8,12 @@ export default function Health() {
     const [showTooltip, setShowTooltip] = React.useState(false)
     const [health, maxHealth] = useStore((s) => [s.health, s.maxHealth])
 
-    const message =
-        health === 0 ? "You're out of lives!" : `${health} lives remaining`
+    const message = `${health} lives remaining`
 
     React.useEffect(() => {
-        if (health === maxHealth) return
+        if (health === maxHealth || health === 0) return
         setShowTooltip(true)
-        const timeout = setTimeout(() => setShowTooltip(false), 1500)
-        return () => clearTimeout(timeout)
+        setTimeout(() => setShowTooltip(false), 1500)
     }, [health, maxHealth])
 
     return (
@@ -26,7 +24,11 @@ export default function Health() {
             label={message}
         >
             <HStack>
-                {health === 0 ? <Text>{message}</Text> : null}
+                {health === 0 ? (
+                    <Text fontSize="lg" color="red.500">
+                        {"You're out of lives!"}
+                    </Text>
+                ) : null}
                 {health > 0
                     ? new Array(health)
                           .fill(null)
