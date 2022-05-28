@@ -13,7 +13,7 @@ datasource db {
 model ParagraphGameLink {
     id         String   @id @default(uuid())
     createdAt  DateTime @default(now())
-    code       String   @unique
+    code       String   @unique @default(uuid())
     paragraph  String
     hideCreate Boolean  @default(false)
 }
