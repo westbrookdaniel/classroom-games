@@ -1,6 +1,7 @@
-import { HStack } from '@chakra-ui/react'
+import { HStack, Icon } from '@chakra-ui/react'
 import * as React from 'react'
 import { useStore } from '../store'
+import { HeartIcon } from '@heroicons/react/solid'
 
 export default function Health() {
     const health = useStore((s) => s.health)
@@ -11,7 +12,14 @@ export default function Health() {
             {health > 0
                 ? new Array(health)
                       .fill(null)
-                      .map((_, i) => <p key={i}>{'<3'}</p>)
+                      .map((_, i) => (
+                          <Icon
+                              key={i}
+                              fontSize="xl"
+                              color="red.500"
+                              as={HeartIcon}
+                          />
+                      ))
                 : null}
         </HStack>
     )
