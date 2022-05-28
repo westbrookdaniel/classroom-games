@@ -1,11 +1,12 @@
 import { useMergeRefs, Stack, ButtonGroup, Button } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { TokenState, useStore } from '../store'
 import { FormInput } from './Form'
 
 interface FormProps {
     onCancel: () => void
     onSuccess: () => void
-    tokenText: string
+    token: TokenState
     initialRef: React.RefObject<HTMLInputElement>
 }
 
@@ -16,23 +17,27 @@ interface FormValues {
 export function TokenForm({
     onSuccess,
     onCancel,
-    tokenText,
+    token,
     initialRef,
 }: FormProps) {
+    const setTokenGuess = useStore((s) => s.setTokenGuess)
+
     const {
         register,
         handleSubmit,
         formState: { isSubmitting, errors },
     } = useForm<FormValues>()
 
+    const onSubmit: SubmitHandler<FormValues> = ({ guess }) => {
+        setTokenGuess(token.id, guess)
+        onSuccess()
+    }
+
     const { ref, ...guessProps } = register('guess', {
         required: 'Guess is required',
     })
-    const refs = useMergeRefs(ref, initialRef)
 
-    const onSubmit: SubmitHandler<FormValues> = () => {
-        onSuccess()
-    }
+    const refs = useMergeRefs(ref, initialRef)
 
     return (
         <Stack
@@ -40,11 +45,13 @@ export function TokenForm({
             noValidate
             onSubmit={handleSubmit(onSubmit)}
             spacing={4}
+            autoComplete="off"
         >
             <FormInput
                 label="What should this say?"
-                helper={`It currently says: "${tokenText}"`}
+                helper={`It currently says: "${token.value}"`}
                 error={errors.guess?.message}
+                autoComplete="off"
                 formControlProps={{ isRequired: true }}
                 ref={refs}
                 {...guessProps}

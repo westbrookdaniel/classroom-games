@@ -6,14 +6,15 @@ import {
     PopoverCloseButton,
 } from '@chakra-ui/react'
 import * as React from 'react'
+import { TokenState } from '../store'
 import { TokenForm } from './TokenForm'
 
 interface PopoverProps {
     children: (disclosure: ReturnType<typeof useDisclosure>) => React.ReactNode
-    tokenText: string
+    token: TokenState
 }
 
-export function TokenFormPopover({ children, tokenText }: PopoverProps) {
+export function TokenFormPopover({ children, token }: PopoverProps) {
     const disclosure = useDisclosure()
     const { onClose, isOpen } = disclosure
     const initialRef = React.useRef<HTMLInputElement | null>(null)
@@ -33,7 +34,7 @@ export function TokenFormPopover({ children, tokenText }: PopoverProps) {
                 <TokenForm
                     initialRef={initialRef}
                     onCancel={onClose}
-                    tokenText={tokenText}
+                    token={token}
                     onSuccess={onClose}
                 />
             </PopoverContent>
