@@ -1,5 +1,6 @@
 import create from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { createTokensFromParagraph } from '../utils/createTokensFromParagraph'
 
 export interface TokenState {
     id: number
@@ -12,15 +13,14 @@ export interface TokenState {
 export interface State {
     maxHealth: number
     health: number
-    paragraph: string
     tokenMap: Record<number, TokenState>
     subtractHealth: () => void
-    setParagraph: (paragraph: string, answerMap: Record<number, string>) => void
+    setParagraph: (paragraph: string) => void
     setTokenGuess: (id: number, guess: string) => void
 }
 
 export const useStore = create(
-    immer<State>((set, get) => ({
+    immer<State>((set) => ({
         maxHealth: 5,
         health: 5,
         paragraph: '',
@@ -30,22 +30,9 @@ export const useStore = create(
                 if (state.health > 0) state.health -= 1
                 return state
             }),
-        setParagraph: (
-            paragraph: string,
-            answerMap: Record<number, string>
-        ) => {
-            const tokens = paragraph.split(/([ .,?:;!'])/)
-            const tokenMap: Record<string, TokenState> = {}
-            tokens.forEach((value, id) => {
-                tokenMap[id] = {
-                    id,
-                    value,
-                    answer: answerMap[id],
-                    guess: [],
-                    isCorrect: false,
-                }
-            })
-            set({ paragraph, tokenMap })
+        setParagraph: (paragraph: string) => {
+            const tokenMap = createTokensFromParagraph(paragraph)
+            set({ tokenMap })
         },
         setTokenGuess: (id: number, guess: string) =>
             set((state) => {
@@ -57,3 +44,10 @@ export const useStore = create(
             }),
     }))
 )
+
+// Setup the initial data
+useStore
+    .getState()
+    .setParagraph(
+        'This is a very nomal{normal} looking paragraph, or so I believe.'
+    )

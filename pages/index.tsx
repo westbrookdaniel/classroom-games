@@ -1,16 +1,9 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { Box, Button, Stack } from '@chakra-ui/react'
+import { Button, Stack } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useStore } from '../store'
 import ParagraphGame from '../components/ParagraphGame'
-
-useStore
-    .getState()
-    .setParagraph('This is a very nomal looking paragraph, or so I believe.', {
-        [8]: 'normal',
-    })
 
 const Home: NextPage = () => {
     return (

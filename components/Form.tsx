@@ -80,14 +80,10 @@ export const FormElements: React.FC<FormElementsProps> = ({
     )
 }
 
-export const FormTextArea: React.FC<FormElementsProps & TextareaProps> = ({
-    label,
-    helper,
-    error,
-    formControlProps,
-    name,
-    ...props
-}) => {
+export const FormTextArea = React.forwardRef<
+    HTMLTextAreaElement,
+    FormElementsProps & TextareaProps
+>(({ label, helper, error, formControlProps, name, ...props }, ref) => {
     return (
         <FormElements
             formControlProps={formControlProps}
@@ -96,10 +92,10 @@ export const FormTextArea: React.FC<FormElementsProps & TextareaProps> = ({
             label={label}
             name={name}
         >
-            <Textarea id={name} name={name} w="full" {...props} />
+            <Textarea id={name} name={name} w="full" ref={ref} {...props} />
         </FormElements>
     )
-}
+})
 
 export const FormInput = React.forwardRef<
     HTMLInputElement,
