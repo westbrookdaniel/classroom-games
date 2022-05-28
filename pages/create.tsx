@@ -14,6 +14,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormCheckbox, FormInput, FormTextArea } from '../components/Form'
 import { createLink } from '../api/paragraphGameLink'
 import { CopyLink } from '../components/CopyLink'
+import { useRouter } from 'next/router'
 
 interface FormValues {
     paragraph: string
@@ -22,6 +23,7 @@ interface FormValues {
 }
 
 const Create: NextPage = () => {
+    const router = useRouter()
     const toast = useToast()
     const [showLink, setShowLink] = React.useState<string | null>(null)
 
@@ -86,7 +88,7 @@ const Create: NextPage = () => {
                         required: 'Paragraph is required',
                     })}
                     label="Enter your paragraph"
-                    helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation.`}
+                    helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation. New lines are also not supported.`}
                     error={errors.paragraph?.message}
                     autoComplete="off"
                     formControlProps={{ isRequired: true }}
@@ -113,9 +115,9 @@ const Create: NextPage = () => {
                 />
 
                 <ButtonGroup display="flex" justifyContent="flex-end">
-                    <Link href="/">
-                        <Button type="button">Cancel</Button>
-                    </Link>
+                    <Button onClick={router.back} type="button">
+                        Cancel
+                    </Button>
                     <Button
                         colorScheme="green"
                         type="submit"

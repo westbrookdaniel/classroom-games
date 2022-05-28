@@ -21,7 +21,7 @@ export default function TokenParagraph() {
                     isDisabled={isDisabled}
                     key={token.id}
                     token={token}
-                    onClick={subtractHealth}
+                    onClick={!isDisabled ? subtractHealth : undefined}
                 />
             )
         }

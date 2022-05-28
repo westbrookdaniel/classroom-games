@@ -21,6 +21,7 @@ const Home: NextPage = () => {
             alignItems="center"
             justifyContent="center"
             p={6}
+            spacing={16}
         >
             <Head>
                 <title>Paragraph Game</title>

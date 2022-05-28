@@ -17,7 +17,7 @@ export default function ParagraphGame() {
     }, [isAllCorrect])
 
     return (
-        <VStack spacing={16}>
+        <VStack spacing={16} maxW="2xl">
             <VStack spacing={12}>
                 <Text color="gray.500" align="center">
                     There{' '}

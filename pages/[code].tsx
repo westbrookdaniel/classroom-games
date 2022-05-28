@@ -7,6 +7,7 @@ import ParagraphGame from '../components/ParagraphGame'
 import { useStore } from '../store'
 import { getLinkByCode } from '../models/paragraphGameLink'
 import { ParagraphGameLink } from '@prisma/client'
+import ErrorPage from 'next/error'
 
 export const getServerSideProps: GetServerSideProps = async ({
     query,
@@ -34,7 +35,7 @@ interface Props {
 const LinkPage: NextPage<Props> = ({ gameLink }) => {
     const setParagraph = useStore((s) => s.setParagraph)
 
-    if (!gameLink) return <div>Page not found</div>
+    if (!gameLink) return <ErrorPage statusCode={404} />
 
     setParagraph(gameLink.paragraph)
 
@@ -45,9 +46,10 @@ const LinkPage: NextPage<Props> = ({ gameLink }) => {
             alignItems="center"
             justifyContent="center"
             p={6}
+            spacing={16}
         >
             <Head>
-                <title>Paragraph Game</title>
+                <title>{gameLink.code} - Paragraph Game</title>
                 <meta
                     name="description"
                     content="Some fun games for the classroom"

@@ -5,6 +5,7 @@ export async function getLinkByCode({ code }: Pick<ParagraphGameLink, 'code'>) {
     const link = await prisma.paragraphGameLink.findFirst({
         where: { code },
     })
+    if (!link) return null
     return {
         ...link,
         createdAt: link?.createdAt.toUTCString(),

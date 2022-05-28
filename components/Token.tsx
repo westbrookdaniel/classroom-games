@@ -26,7 +26,6 @@ export function TokenWithForm({ token, isDisabled }: TokenWithForm) {
                     isTooltipOpen={showTooltip ? true : undefined}
                     disableTooltip={isOpen}
                     token={token}
-                    isDisabled={isDisabled}
                 >
                     <PopoverTrigger>
                         <TokenDisplay
