@@ -10,6 +10,7 @@ export interface TokenState {
 }
 
 export interface State {
+    maxHealth: number
     health: number
     paragraph: string
     tokenMap: Record<number, TokenState>
@@ -20,6 +21,7 @@ export interface State {
 
 export const useStore = create(
     immer<State>((set, get) => ({
+        maxHealth: 5,
         health: 5,
         paragraph: '',
         tokenMap: {},

@@ -1,17 +1,32 @@
-import { PopoverTrigger, Text, Tooltip } from '@chakra-ui/react'
-import { TokenState } from '../store'
+import * as React from 'react'
+import { PopoverTrigger, Text } from '@chakra-ui/react'
+import { TokenState, useStore } from '../store'
 import { TokenDisplay } from './TokenDisplay'
 import { TokenFormPopover } from './TokenFormPopover'
+import { Tooltip } from './Tooltip'
 
 interface TokenWithForm {
     token: TokenState
 }
 
 export function TokenWithForm({ token }: TokenWithForm) {
+    const [showTooltip, setShowTooltip] = React.useState(false)
+
+    React.useEffect(() => {
+        if (!token.isCorrect) return
+        setShowTooltip(true)
+        const timeout = setTimeout(() => setShowTooltip(false), 1500)
+        return () => clearTimeout(timeout)
+    }, [token.isCorrect])
+
     return (
         <TokenFormPopover token={token}>
             {({ onToggle, isOpen }) => (
-                <Token disableTooltip={isOpen} token={token}>
+                <Token
+                    isTooltipOpen={showTooltip ? true : undefined}
+                    disableTooltip={isOpen}
+                    token={token}
+                >
                     <PopoverTrigger>
                         <TokenDisplay onClick={onToggle} token={token} />
                     </PopoverTrigger>
@@ -25,6 +40,7 @@ interface TokenProps {
     token: TokenState
     onClick?: () => void
     disableTooltip?: boolean
+    isTooltipOpen?: boolean
     children?: React.ReactNode
 }
 
@@ -33,17 +49,14 @@ export function Token({
     disableTooltip,
     onClick,
     children,
+    isTooltipOpen,
 }: TokenProps) {
     return (
         <Tooltip
-            label={token.value}
-            minH="1.8em"
-            placement="top"
-            px={3}
-            py={1}
-            background="purple.700"
-            fontSize="xl"
+            label={token.isCorrect ? 'Correct!' : token.value}
+            background={token.isCorrect ? 'green.500' : 'purple.700'}
             display={disableTooltip ? 'none' : undefined}
+            isOpen={isTooltipOpen}
         >
             <Text as="span">
                 {children ? (

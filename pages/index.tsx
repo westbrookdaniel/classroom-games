@@ -28,7 +28,7 @@ const Home: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <VStack spacing={8}>
+            <VStack spacing={16}>
                 <TokenParagraph />
                 <Health />
             </VStack>
