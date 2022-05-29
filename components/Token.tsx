@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PopoverTrigger, Text, useToast } from '@chakra-ui/react'
+import { PopoverTrigger, Text } from '@chakra-ui/react'
 import { TokenState, useStore } from '../store'
 import { TokenDisplay } from './TokenDisplay'
 import { TokenFormPopover } from './TokenFormPopover'
