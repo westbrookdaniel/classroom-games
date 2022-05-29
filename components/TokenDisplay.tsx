@@ -13,6 +13,7 @@ export const TokenDisplay = React.forwardRef<HTMLParagraphElement, Props>(
         const theme = useTheme()
         const transperantGray = `${theme.colors.gray[200]}90`
         const transperantGreen = `${theme.colors.green[200]}90`
+        const transperantRed = `${theme.colors.red[200]}90`
 
         const latestGuess = token.guess[token.guess.length - 1]
 
@@ -32,11 +33,35 @@ export const TokenDisplay = React.forwardRef<HTMLParagraphElement, Props>(
             )
         }
 
+        if (token.hasSelected) {
+            return (
+                <Text
+                    ref={ref}
+                    as="span"
+                    onClick={isDisabled ? undefined : onClick}
+                    _hover={
+                        isDisabled
+                            ? undefined
+                            : {
+                                  background: transperantRed,
+                                  outline: '0.2em',
+                                  outlineColor: transperantRed,
+                                  outlineStyle: 'solid',
+                                  cursor: 'pointer',
+                                  borderRadius: 'sm',
+                              }
+                    }
+                >
+                    {token.value}
+                </Text>
+            )
+        }
+
         return (
             <Text
                 ref={ref}
                 as="span"
-                onClick={onClick}
+                onClick={isDisabled ? undefined : onClick}
                 _hover={
                     isDisabled
                         ? undefined

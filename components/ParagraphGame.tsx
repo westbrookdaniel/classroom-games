@@ -20,16 +20,19 @@ export default function ParagraphGame() {
     return (
         <VStack spacing={16} maxW="2xl">
             <VStack spacing={12}>
-                <Text color="gray.500" align="center">
-                    There{' '}
-                    {plural(
-                        answers.length,
-                        `is ${answers.length} error`,
-                        `are ${answers.length} errors`
-                    )}{' '}
-                    in this paragraph, can you find{' '}
-                    {plural(answers.length, 'it', 'them all')}?
-                </Text>
+                <VStack color="gray.500" align="center">
+                    <Text>
+                        There{' '}
+                        {plural(
+                            answers.length,
+                            `is ${answers.length} error`,
+                            `are ${answers.length} errors`
+                        )}{' '}
+                        in this paragraph, can you find{' '}
+                        {plural(answers.length, 'it', 'them all')}?
+                    </Text>
+                    <Text fontSize="sm">Click on an error to correct it</Text>
+                </VStack>
                 <TokenParagraph />
             </VStack>
             <Health />

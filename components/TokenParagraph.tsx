@@ -4,9 +4,9 @@ import useStoreAnswers from '../utils/useStoreAnswers'
 import { Token, TokenWithForm } from './Token'
 
 export default function TokenParagraph() {
-    const [tokenMap, subtractHealth, hasNoHealth] = useStore((s) => [
+    const [tokenMap, setIncorrectSelect, hasNoHealth] = useStore((s) => [
         s.tokenMap,
-        s.subtractHealth,
+        s.setIncorrectSelect,
         s.health === 0,
     ])
 
@@ -21,7 +21,7 @@ export default function TokenParagraph() {
                     isDisabled={isDisabled}
                     key={token.id}
                     token={token}
-                    onClick={!isDisabled ? subtractHealth : undefined}
+                    onClick={() => setIncorrectSelect(token.id)}
                 />
             )
         }

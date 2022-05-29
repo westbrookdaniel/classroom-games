@@ -5,6 +5,7 @@ export type { TooltipProps }
 export function Tooltip(props: TooltipProps) {
     return (
         <ChakraTooltip
+            closeOnClick={false}
             minH="1.8em"
             placement="top"
             px={3}

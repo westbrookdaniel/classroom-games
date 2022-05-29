@@ -35,7 +35,7 @@ export function TokenFormPopover({ children, token }: PopoverProps) {
                     initialRef={initialRef}
                     onCancel={onClose}
                     token={token}
-                    onSuccess={onClose}
+                    onClose={onClose}
                 />
             </PopoverContent>
         </Popover>

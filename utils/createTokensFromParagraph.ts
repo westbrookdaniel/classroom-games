@@ -16,6 +16,7 @@ export function createTokensFromParagraph(paragraph: string) {
                 answer,
                 guess: [],
                 isCorrect: false,
+                hasSelected: false,
             }
         } else {
             tokenMap[id] = {
@@ -23,6 +24,7 @@ export function createTokensFromParagraph(paragraph: string) {
                 value,
                 guess: [],
                 isCorrect: false,
+                hasSelected: false,
             }
         }
     })

@@ -8,13 +8,14 @@ export interface TokenState {
     guess: string[]
     answer?: string
     isCorrect: boolean
+    hasSelected: boolean
 }
 
 export interface State {
     maxHealth: number
     health: number
     tokenMap: Record<number, TokenState>
-    subtractHealth: () => void
+    setIncorrectSelect: (id: number) => void
     setParagraph: (paragraph: string) => void
     setTokenGuess: (id: number, guess: string) => void
 }
@@ -25,22 +26,24 @@ export const useStore = create(
         health: 5,
         paragraph: '',
         tokenMap: {},
-        subtractHealth: () =>
+        setIncorrectSelect: (id: number) =>
             set((state) => {
                 if (state.health > 0) state.health -= 1
+                state.tokenMap[id].hasSelected = true
                 return state
             }),
         setParagraph: (paragraph: string) => {
             const tokenMap = createTokensFromParagraph(paragraph)
             set({ tokenMap })
         },
-        setTokenGuess: (id: number, guess: string) =>
+        setTokenGuess: (id: number, guess: string) => {
             set((state) => {
                 const token = state.tokenMap[id]
                 token.guess.push(guess)
                 token.isCorrect = guess === token.answer
                 if (!token.isCorrect && state.health > 0) state.health -= 1
                 return state
-            }),
+            })
+        },
     }))
 )

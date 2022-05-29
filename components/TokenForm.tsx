@@ -5,7 +5,7 @@ import { FormInput } from './Form'
 
 interface FormProps {
     onCancel: () => void
-    onSuccess: () => void
+    onClose: () => void
     token: TokenState
     initialRef: React.RefObject<HTMLInputElement>
 }
@@ -14,27 +14,35 @@ interface FormValues {
     guess: string
 }
 
-export function TokenForm({
-    onSuccess,
-    onCancel,
-    token,
-    initialRef,
-}: FormProps) {
+export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
     const setTokenGuess = useStore((s) => s.setTokenGuess)
 
     const {
         register,
         handleSubmit,
+        reset,
+        setError,
         formState: { isSubmitting, errors },
     } = useForm<FormValues>()
 
     const onSubmit: SubmitHandler<FormValues> = ({ guess }) => {
         setTokenGuess(token.id, guess)
-        onSuccess()
+        const latestState = useStore.getState()
+        const isCorrect = latestState.tokenMap[token.id].isCorrect
+        const hasNoHealth = latestState.health === 0
+
+        if (isCorrect || hasNoHealth) {
+            return onClose()
+        }
+
+        reset()
+        setError('guess', {
+            message: "You didn't get it right, try again!",
+        })
     }
 
     const { ref, ...guessProps } = register('guess', {
-        required: 'Guess is required',
+        required: "Don't forget to type your guess",
     })
 
     const refs = useMergeRefs(ref, initialRef)
