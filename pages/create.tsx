@@ -9,10 +9,11 @@ import {
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form'
 import { FormCheckbox, FormInput, FormTextArea } from '../components/Form'
 import { createLink } from '../utils/paragraphGameLink'
 import { CopyLink } from '../components/CopyLink'
+import { ParagraphPreview } from '../components/ParagraphPreview'
 import { useRouter } from 'next/router'
 
 interface FormValues {
@@ -29,6 +30,7 @@ const Create: NextPage = () => {
     const {
         register,
         handleSubmit,
+        control,
         formState: { isSubmitting, errors },
     } = useForm<FormValues>()
 
@@ -59,6 +61,11 @@ const Create: NextPage = () => {
         }
     }
 
+    const paragraph = useWatch({
+        control,
+        name: 'paragraph',
+    })
+
     return (
         <Stack
             minH="100vh"
@@ -79,19 +86,23 @@ const Create: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Stack spacing={8} w="full" maxW="xl">
+            <Stack spacing={12} w="full" maxW="xl">
                 <Heading>Create</Heading>
 
-                <FormTextArea
-                    {...register('paragraph', {
-                        required: 'Paragraph is required',
-                    })}
-                    label="Enter your paragraph"
-                    helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation. New lines are also not supported.`}
-                    error={errors.paragraph?.message}
-                    autoComplete="off"
-                    formControlProps={{ isRequired: true }}
-                />
+                <Stack spacing={8}>
+                    <FormTextArea
+                        {...register('paragraph', {
+                            required: 'Paragraph is required',
+                        })}
+                        label="Enter your paragraph"
+                        helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation. Punctuation corrections can be done by using square brackets: "Bread is fun( m)[. M|.]y favourite color is blue". New lines are also not supported.`}
+                        error={errors.paragraph?.message}
+                        autoComplete="off"
+                        formControlProps={{ isRequired: true }}
+                    />
+
+                    <ParagraphPreview paragraph={paragraph} />
+                </Stack>
 
                 <FormInput
                     {...register('code', {

@@ -1,8 +1,11 @@
 import { TokenState } from '../store'
 
 export function createTokensFromParagraph(paragraph: string) {
+    if (paragraph === '') return []
+
     const tokens = paragraph.split(/([ .,?:;!'])/)
     const tokenMap: Record<string, TokenState> = {}
+
     tokens.forEach((value, id) => {
         if (value.includes('{')) {
             const wrongValue = value.slice(0, value.indexOf('{'))
@@ -28,5 +31,6 @@ export function createTokensFromParagraph(paragraph: string) {
             }
         }
     })
+
     return tokenMap
 }
