@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PopoverTrigger, Text } from '@chakra-ui/react'
+import { PopoverTrigger, Text, useToast } from '@chakra-ui/react'
 import { TokenState, useStore } from '../store'
 import { TokenDisplay } from './TokenDisplay'
 import { TokenFormPopover } from './TokenFormPopover'
@@ -13,19 +13,11 @@ interface TokenWithForm {
 
 export function TokenWithForm({ token, isDisabled, onClick }: TokenWithForm) {
     const hasNoHealth = useStore((s) => s.health === 0)
-    const [showTooltip, setShowTooltip] = React.useState(false)
-
-    React.useEffect(() => {
-        if (!token.isCorrect) return
-        setShowTooltip(true)
-        setTimeout(() => setShowTooltip(false), 1500)
-    }, [token.isCorrect])
 
     return (
         <TokenFormPopover token={token}>
             {({ onToggle, isOpen }) => (
                 <Token
-                    isTooltipOpen={showTooltip ? true : undefined}
                     // Don't show tooltips if you lost
                     disableTooltip={isOpen || hasNoHealth}
                     token={token}

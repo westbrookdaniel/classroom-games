@@ -23,7 +23,7 @@ interface FormValues {
 
 const Create: NextPage = () => {
     const router = useRouter()
-    const toast = useToast()
+    const toast = useToast({ position: 'top' })
     const [showLink, setShowLink] = React.useState<string | null>(null)
 
     const {

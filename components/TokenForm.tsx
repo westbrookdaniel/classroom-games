@@ -1,4 +1,10 @@
-import { useMergeRefs, Stack, ButtonGroup, Button } from '@chakra-ui/react'
+import {
+    useMergeRefs,
+    Stack,
+    ButtonGroup,
+    Button,
+    useToast,
+} from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { TokenState, useStore } from '../store'
 import { FormInput } from './Form'
@@ -16,6 +22,7 @@ interface FormValues {
 
 export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
     const setTokenGuess = useStore((s) => s.setTokenGuess)
+    const toast = useToast({ position: 'top' })
 
     const {
         register,
@@ -31,7 +38,15 @@ export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
         const isCorrect = latestState.tokenMap[token.id].isCorrect
         const hasNoHealth = latestState.health === 0
 
-        if (isCorrect || hasNoHealth) {
+        if (isCorrect) {
+            toast({
+                status: 'success',
+                title: 'Correct!',
+            })
+            return onClose()
+        }
+
+        if (hasNoHealth) {
             return onClose()
         }
 
