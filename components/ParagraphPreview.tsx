@@ -15,6 +15,8 @@ interface PreviewType {
 }
 
 export function ParagraphPreview({ control }: Props) {
+    const [, startTransition] = React.useTransition()
+
     const paragraph = useWatch({
         control,
         name: 'paragraph',
@@ -26,7 +28,7 @@ export function ParagraphPreview({ control }: Props) {
     })
 
     React.useEffect(() => {
-        React.startTransition(() => {
+        startTransition(() => {
             const newPreview: PreviewType = { correct: [], incorrect: [] }
             Object.values(createTokensFromParagraph(paragraph || '')).forEach(
                 (t) => {
