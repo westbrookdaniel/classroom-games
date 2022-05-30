@@ -16,7 +16,7 @@ import { CopyLink } from '../components/CopyLink'
 import { ParagraphPreview } from '../components/ParagraphPreview'
 import { useRouter } from 'next/router'
 
-interface FormValues {
+export interface FormValues {
     paragraph: string
     code: string
     hideCreate: boolean
@@ -45,12 +45,16 @@ const Create: NextPage = () => {
                 code,
                 hideCreate,
             })
+
             if (res.error) throw new Error(res.error)
+            if (!res.data?.code)
+                throw new Error('We had some trouble generating your link')
+
             toast({
                 status: 'success',
                 title: 'Your link is ready!',
             })
-            setShowLink(`${window.location.origin}/${code}`)
+            setShowLink(`${window.location.origin}/${res.data?.code}`)
         } catch (error) {
             toast({
                 status: 'error',
@@ -60,11 +64,6 @@ const Create: NextPage = () => {
             })
         }
     }
-
-    const paragraph = useWatch({
-        control,
-        name: 'paragraph',
-    })
 
     return (
         <Stack
@@ -98,10 +97,10 @@ const Create: NextPage = () => {
                         helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation.`}
                         error={errors.paragraph?.message}
                         autoComplete="off"
-                        formControlProps={{ isRequired: true }}
+                        props={{ formControlProps: { isRequired: true } }}
                     />
 
-                    <ParagraphPreview paragraph={paragraph} />
+                    <ParagraphPreview control={control} />
                 </Stack>
 
                 <FormInput

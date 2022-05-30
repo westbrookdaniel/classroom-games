@@ -28,7 +28,7 @@ export function TokenFormPopover({ children, token }: PopoverProps) {
             initialFocusRef={initialRef}
         >
             {children(disclosure)}
-            <PopoverContent boxShadow="xl" zIndex={999} p={5}>
+            <PopoverContent boxShadow="xl" zIndex={999} p={5} w="xs">
                 <PopoverArrow />
                 <PopoverCloseButton />
                 <TokenForm

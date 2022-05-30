@@ -35,7 +35,7 @@ export default function TokenParagraph() {
     })
 
     return (
-        <Text as="div" fontSize="xl">
+        <Text as="div" fontSize="3xl">
             {tokens}
         </Text>
     )

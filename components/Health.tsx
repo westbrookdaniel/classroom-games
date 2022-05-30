@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, Text } from '@chakra-ui/react'
+import { HStack, Icon, Text } from '@chakra-ui/react'
 import * as React from 'react'
 import { useStore } from '../store'
 import { HeartIcon } from '@heroicons/react/solid'
@@ -19,13 +19,14 @@ export default function Health() {
 
     return (
         <Tooltip
-            background="purple.700"
+            fontSize="2xl"
+            background="red.500"
             isOpen={showTooltip ? true : undefined}
             label={message}
         >
             <HStack>
                 {health === 0 ? (
-                    <Text fontSize="lg" color="red.500">
+                    <Text fontSize="2xl" color="red.500">
                         {"You're out of lives! Better luck next time"}
                     </Text>
                 ) : null}
@@ -35,7 +36,7 @@ export default function Health() {
                           .map((_, i) => (
                               <Icon
                                   key={i}
-                                  fontSize="xl"
+                                  fontSize="3xl"
                                   color="red.500"
                                   as={HeartIcon}
                               />

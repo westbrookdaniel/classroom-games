@@ -18,10 +18,10 @@ export default function ParagraphGame() {
     }, [isAllCorrect])
 
     return (
-        <VStack spacing={16} maxW="2xl">
-            <VStack spacing={12}>
+        <VStack spacing={20} mt={8} maxW="3xl">
+            <VStack spacing={16}>
                 <VStack color="gray.500" align="center">
-                    <Text>
+                    <Text fontSize="lg">
                         There{' '}
                         {plural(
                             answers.length,
@@ -31,7 +31,7 @@ export default function ParagraphGame() {
                         in this paragraph, can you find{' '}
                         {plural(answers.length, 'it', 'them all')}?
                     </Text>
-                    <Text fontSize="sm">Click on an error to correct it</Text>
+                    <Text>Click on an error to correct it</Text>
                 </VStack>
                 <TokenParagraph />
             </VStack>

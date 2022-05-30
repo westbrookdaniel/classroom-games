@@ -4,6 +4,7 @@ import {
     ButtonGroup,
     Button,
     useToast,
+    HStack,
 } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { TokenState, useStore } from '../store'
@@ -52,7 +53,7 @@ export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
 
         reset()
         setError('guess', {
-            message: "You didn't get it right, try again!",
+            message: 'Incorrect, try again!',
         })
     }
 
@@ -75,7 +76,13 @@ export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
                 helper={`It currently says: "${token.value}"`}
                 error={errors.guess?.message}
                 autoComplete="off"
-                formControlProps={{ isRequired: true }}
+                props={{
+                    formControlProps: { isRequired: true },
+                    labelProps: { fontSize: 'lg' },
+                    helperProps: { fontSize: 'md' },
+                    errorProps: { fontSize: 'md' },
+                }}
+                size="lg"
                 ref={refs}
                 {...guessProps}
             />
@@ -88,7 +95,7 @@ export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
                     isLoading={isSubmitting}
                     colorScheme="green"
                 >
-                    Save
+                    Submit
                 </Button>
             </ButtonGroup>
         </Stack>

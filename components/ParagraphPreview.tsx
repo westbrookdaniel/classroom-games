@@ -1,22 +1,49 @@
+import * as React from 'react'
 import { Text, Stack } from '@chakra-ui/react'
 import { createTokensFromParagraph } from '../utils/createTokensFromParagraph'
 import { TokenDisplay } from './TokenDisplay'
+import { Control, useWatch } from 'react-hook-form'
+import { FormValues } from '../pages/create'
 
 interface Props {
-    paragraph: string
+    control: Control<FormValues, any>
 }
 
-export function ParagraphPreview({ paragraph }: Props) {
-    const incorrectPreview = Object.values(
-        createTokensFromParagraph(paragraph || '')
-    ).map((t) => <TokenDisplay key={t.id} token={t} />)
+interface PreviewType {
+    correct: JSX.Element[]
+    incorrect: JSX.Element[]
+}
 
-    const correctPreview = Object.values(
-        createTokensFromParagraph(paragraph || '')
-    ).map((t) => {
-        if (t.answer) t.isCorrect = true
-        return <TokenDisplay key={t.id} token={t} />
+export function ParagraphPreview({ control }: Props) {
+    const paragraph = useWatch({
+        control,
+        name: 'paragraph',
     })
+
+    const [preview, setPreview] = React.useState<PreviewType>({
+        correct: [],
+        incorrect: [],
+    })
+
+    React.useEffect(() => {
+        React.startTransition(() => {
+            const newPreview: PreviewType = { correct: [], incorrect: [] }
+            Object.values(createTokensFromParagraph(paragraph || '')).forEach(
+                (t) => {
+                    newPreview.incorrect.push(
+                        <TokenDisplay key={t.id} token={t} />
+                    )
+                    newPreview.correct.push(
+                        <TokenDisplay
+                            key={t.id}
+                            token={t.answer ? { ...t, isCorrect: true } : t}
+                        />
+                    )
+                }
+            )
+            setPreview(newPreview)
+        })
+    }, [paragraph])
 
     return (
         <Stack spacing={4}>
@@ -25,12 +52,12 @@ export function ParagraphPreview({ paragraph }: Props) {
                 <Text fontSize="sm" color="gray.500" fontWeight="semibold">
                     Incorrect
                 </Text>
-                {incorrectPreview.length === 0 ? (
+                {preview.incorrect.length === 0 ? (
                     <Text color="gray.500">
                         Enter your paragraph to view a preview
                     </Text>
                 ) : (
-                    <Text>{incorrectPreview}</Text>
+                    <Text>{preview.incorrect}</Text>
                 )}
             </Stack>
 
@@ -38,12 +65,12 @@ export function ParagraphPreview({ paragraph }: Props) {
                 <Text color="gray.500" fontSize="sm" fontWeight="semibold">
                     Corrected
                 </Text>
-                {correctPreview.length === 0 ? (
+                {preview.correct.length === 0 ? (
                     <Text color="gray.500">
                         Enter your paragraph to view a preview
                     </Text>
                 ) : (
-                    <Text>{correctPreview}</Text>
+                    <Text>{preview.correct}</Text>
                 )}
             </Stack>
         </Stack>

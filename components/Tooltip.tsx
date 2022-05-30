@@ -1,8 +1,14 @@
-import { Tooltip as ChakraTooltip, TooltipProps } from '@chakra-ui/react'
+import * as React from 'react'
+import {
+    Tooltip as ChakraTooltip,
+    TooltipProps,
+    useBreakpointValue,
+} from '@chakra-ui/react'
 
 export type { TooltipProps }
 
-export function Tooltip(props: TooltipProps) {
+export function Tooltip({ isDisabled, ...props }: TooltipProps) {
+    const isMobile = true
     return (
         <ChakraTooltip
             closeOnClick={false}
@@ -10,7 +16,7 @@ export function Tooltip(props: TooltipProps) {
             placement="top"
             px={3}
             py={1}
-            fontSize="xl"
+            fontSize="3xl"
             {...props}
         />
     )

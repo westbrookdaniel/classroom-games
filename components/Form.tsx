@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
     Checkbox,
     CheckboxProps,
-    HTMLChakraProps,
     Input,
     InputProps,
     Radio,
@@ -16,17 +15,23 @@ import {
     FormControl,
     FormControlProps,
     HStack,
+    StyleProps,
+    ChakraProps,
 } from '@chakra-ui/react'
 
-type Stylable = HTMLChakraProps<'div'>
+type Stylable = StyleProps & ChakraProps
 
 interface FormLabelProps extends Stylable, Pick<InputProps, 'name'> {
     label?: string
 }
 
-export const FormLabel: React.FC<FormLabelProps> = ({ label, name }) => {
+export const FormLabel: React.FC<FormLabelProps> = ({
+    label,
+    name,
+    ...props
+}) => {
     return label ? (
-        <ChakraFormLabel m={0} htmlFor={name}>
+        <ChakraFormLabel m={0} htmlFor={name} {...props}>
             {label}
         </ChakraFormLabel>
     ) : null
@@ -36,9 +41,9 @@ interface FormHelperProps extends Stylable {
     helper?: string
 }
 
-export const FormHelper: React.FC<FormHelperProps> = ({ helper }) => {
+export const FormHelper: React.FC<FormHelperProps> = ({ helper, ...props }) => {
     return helper ? (
-        <Text fontSize="sm" color="gray.500">
+        <Text fontSize="sm" color="gray.500" {...props}>
             {helper}
         </Text>
     ) : null
@@ -48,15 +53,21 @@ interface FormErrorProps extends Stylable {
     error?: string | boolean
 }
 
-export const FormError: React.FC<FormErrorProps> = ({ error }) => {
-    return <ChakraFormErrorMessage>{error}</ChakraFormErrorMessage>
+export const FormError: React.FC<FormErrorProps> = ({ error, ...props }) => {
+    return <ChakraFormErrorMessage {...props}>{error}</ChakraFormErrorMessage>
 }
 
 interface FormElementsProps
     extends FormLabelProps,
         FormHelperProps,
         FormErrorProps {
-    formControlProps?: FormControlProps
+    props?: {
+        formControlProps?: FormControlProps
+        labelProps?: FormLabelProps
+        helperProps?: FormHelperProps
+        errorProps?: FormErrorProps
+    }
+    children?: React.ReactNode
 }
 
 export const FormElements: React.FC<FormElementsProps> = ({
@@ -65,18 +76,19 @@ export const FormElements: React.FC<FormElementsProps> = ({
     error,
     label,
     name,
-    formControlProps,
+    props = {},
 }) => {
+    const { formControlProps, labelProps, helperProps, errorProps } = props
     return (
         <FormControl isInvalid={!!error} {...formControlProps}>
             {label || helper ? (
                 <Stack spacing={1} mb={2}>
-                    <FormLabel label={label} name={name} />
-                    <FormHelper helper={helper} />
+                    <FormLabel label={label} name={name} {...labelProps} />
+                    <FormHelper helper={helper} {...helperProps} />
                 </Stack>
             ) : null}
             {children}
-            <FormError error={error} />
+            <FormError error={error} {...errorProps} />
         </FormControl>
     )
 }
@@ -84,16 +96,16 @@ export const FormElements: React.FC<FormElementsProps> = ({
 export const FormTextArea = React.forwardRef<
     HTMLTextAreaElement,
     FormElementsProps & TextareaProps
->(({ label, helper, error, formControlProps, name, ...props }, ref) => {
+>(({ label, helper, error, props, name, ...rest }, ref) => {
     return (
         <FormElements
-            formControlProps={formControlProps}
             helper={helper}
             error={error}
             label={label}
             name={name}
+            props={props}
         >
-            <Textarea id={name} name={name} w="full" ref={ref} {...props} />
+            <Textarea id={name} name={name} w="full" ref={ref} {...rest} />
         </FormElements>
     )
 })
@@ -101,19 +113,16 @@ export const FormTextArea = React.forwardRef<
 export const FormInput = React.forwardRef<
     HTMLInputElement,
     FormElementsProps & InputProps
->(function FormInput(
-    { label, helper, error, formControlProps, name, ...props },
-    ref
-) {
+>(function FormInput({ label, helper, error, props, name, ...rest }, ref) {
     return (
         <FormElements
-            formControlProps={formControlProps}
             helper={helper}
             error={error}
             label={label}
             name={name}
+            props={props}
         >
-            <Input id={name} name={name} w="full" ref={ref} {...props} />
+            <Input id={name} name={name} w="full" ref={ref} {...rest} />
         </FormElements>
     )
 })
@@ -121,12 +130,13 @@ export const FormInput = React.forwardRef<
 export const FormCheckbox = React.forwardRef<
     HTMLInputElement,
     FormElementsProps & CheckboxProps
->(function FormCheckbox(
-    { label, helper, error, name, formControlProps, ...props },
-    ref
-) {
+>(function FormCheckbox({ label, helper, error, name, props, ...rest }, ref) {
     return (
-        <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
+        <Stack
+            as={FormControl}
+            isInvalid={!!error}
+            {...props?.formControlProps}
+        >
             <HStack alignItems="center">
                 <Checkbox
                     id={name}
@@ -134,13 +144,18 @@ export const FormCheckbox = React.forwardRef<
                     aria-invalid={error ? true : undefined}
                     aria-describedby={`${name}-error`}
                     ref={ref}
-                    {...props}
+                    {...rest}
                 />
                 {label || helper ? (
-                    <FormLabel userSelect="none" label={label} name={name} />
+                    <FormLabel
+                        userSelect="none"
+                        label={label}
+                        name={name}
+                        {...props?.labelProps}
+                    />
                 ) : null}
             </HStack>
-            <FormError error={error} />
+            <FormError error={error} {...props?.errorProps} />
         </Stack>
     )
 })
@@ -149,11 +164,15 @@ export const FormRadio = React.forwardRef<
     HTMLInputElement,
     FormElementsProps & RadioProps
 >(function FormRadio(
-    { label, helper, error, name, formControlProps, value, ...props },
+    { label, helper, error, name, props, value, ...rest },
     ref
 ) {
     return (
-        <Stack as={FormControl} isInvalid={!!error} {...formControlProps}>
+        <Stack
+            as={FormControl}
+            isInvalid={!!error}
+            {...props?.formControlProps}
+        >
             <HStack alignItems="center">
                 <Radio
                     id={`${value}`}
@@ -162,17 +181,18 @@ export const FormRadio = React.forwardRef<
                     aria-describedby={`${name}-error`}
                     value={value}
                     ref={ref}
-                    {...props}
+                    {...rest}
                 />
                 {label || helper ? (
                     <FormLabel
                         userSelect="none"
                         label={label}
                         name={`${value}`}
+                        {...props?.labelProps}
                     />
                 ) : null}
             </HStack>
-            <FormError error={error} />
+            <FormError error={error} {...props?.errorProps} />
         </Stack>
     )
 })
