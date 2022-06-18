@@ -1,14 +1,8 @@
-import {
-    useMergeRefs,
-    Stack,
-    ButtonGroup,
-    Button,
-    useToast,
-} from '@chakra-ui/react'
+import { Stack, ButtonGroup, Button, useToast } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { FormProps } from '.'
 import { useStore } from '../../store'
-import { FormRadio } from '../Form'
+import { FormRadioCard } from '../Form'
 
 interface FormValues {
     guess: string
@@ -25,6 +19,7 @@ export function PunctForm({ onClose, onCancel, token, initialRef }: FormProps) {
         handleSubmit,
         reset,
         setError,
+        setValue,
         formState: { isSubmitting, errors },
     } = useForm<FormValues>()
 
@@ -61,7 +56,7 @@ export function PunctForm({ onClose, onCancel, token, initialRef }: FormProps) {
             spacing={4}
             autoComplete="off"
         >
-            <FormRadio
+            <FormRadioCard
                 label="What should this be?"
                 helper={`The current punctuation is "${token.punct.value}"`}
                 error={errors.guess?.message}
@@ -71,7 +66,7 @@ export function PunctForm({ onClose, onCancel, token, initialRef }: FormProps) {
                     helperProps: { fontSize: 'md' },
                     errorProps: { fontSize: 'md' },
                 }}
-                size="lg"
+                fontSize="lg"
                 options={[
                     { label: '.', value: '.', ref: initialRef },
                     { label: ',', value: ',' },
@@ -80,8 +75,9 @@ export function PunctForm({ onClose, onCancel, token, initialRef }: FormProps) {
                     { label: '?', value: '?' },
                     { label: '!', value: '!' },
                 ]}
+                setValue={setValue}
                 {...register('guess', {
-                    required: "Don't forget to type your guess",
+                    required: "Don't forget to choose your guess",
                 })}
             />
             <ButtonGroup display="flex" justifyContent="flex-end">

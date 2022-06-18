@@ -4,7 +4,6 @@ import {
     CheckboxProps,
     Input,
     InputProps,
-    Radio,
     Text,
     RadioProps,
     Stack,
@@ -19,9 +18,17 @@ import {
     ChakraProps,
     RadioGroup,
     StackProps,
+    useRadio,
+    useMultiStyleConfig,
     Box,
-    Flex,
+    omitThemingProps,
+    useRadioGroupContext,
+    useRadioGroup,
 } from '@chakra-ui/react'
+import { callAll, split } from '@chakra-ui/utils'
+import { layoutPropNames, forwardRef } from '@chakra-ui/system'
+
+import { UseFormSetValue } from 'react-hook-form'
 
 type Stylable = StyleProps & ChakraProps
 
@@ -171,25 +178,36 @@ interface FormRadioProps {
         ref?: React.ForwardedRef<HTMLInputElement>
     }[]
     fieldsetProps?: StackProps
+    setValue: UseFormSetValue<any>
+    defaultValue?: string | number | undefined
 }
 
-export const FormRadio = React.forwardRef<
+export const FormRadioCard = React.forwardRef<
     HTMLInputElement,
     FormElementsProps & RadioProps & FormRadioProps
->(function FormRadio(
-    {
-        label,
-        helper,
-        error,
+>(function FormRadioCard({
+    label,
+    helper,
+    error,
+    name,
+    props,
+    value,
+    options,
+    fieldsetProps,
+    defaultValue,
+    onChange,
+    setValue,
+    ...rest
+}) {
+    const { getRootProps, getRadioProps } = useRadioGroup({
         name,
-        props,
+        defaultValue,
         value,
-        options,
-        fieldsetProps,
-        ...rest
-    },
-    ref
-) {
+        onChange: (newValue) => name && setValue(name, newValue),
+    })
+
+    const group = getRootProps(fieldsetProps)
+
     return (
         <FormElements
             helper={helper}
@@ -204,18 +222,21 @@ export const FormRadio = React.forwardRef<
                 aria-invalid={error ? true : undefined}
                 aria-describedby={`${name}-error`}
             >
-                <Stack as="fieldset" {...fieldsetProps}>
-                    {options.map((option, i) => {
+                <Stack as="fieldset" {...group}>
+                    {options.map((option) => {
+                        const radio = getRadioProps(
+                            {
+                                id: `${name}-${option.value}`,
+                                value: option.value,
+                                'aria-invalid': rest['aria-invalid'],
+                                onBlur: rest.onBlur,
+                            },
+                            option.ref
+                        )
                         return (
-                            <Radio
-                                key={option.value}
-                                id={`${name}-${option.value}`}
-                                value={option.value}
-                                {...rest}
-                                ref={option.ref || ref}
-                            >
+                            <RadioCard key={option.value} {...rest} {...radio}>
                                 {option.label}
-                            </Radio>
+                            </RadioCard>
                         )
                     })}
                 </Stack>
@@ -223,3 +244,51 @@ export const FormRadio = React.forwardRef<
         </FormElements>
     )
 })
+
+const RadioCard = forwardRef<RadioProps, 'input'>(
+    ({ isChecked, ...props }, ref) => {
+        const { getInputProps, getCheckboxProps, getRootProps } = useRadio({
+            isChecked,
+            ...props,
+        })
+
+        const inputProps = getInputProps({}, ref)
+        const checkboxProps = getCheckboxProps()
+        const rootProps = getRootProps()
+
+        return (
+            <Box as="label" {...rootProps}>
+                <input {...inputProps} />
+                <Box
+                    cursor="pointer"
+                    borderWidth={2}
+                    borderRadius="md"
+                    _checked={{
+                        bg: 'blue.500',
+                        color: 'white',
+                        borderColor: 'blue.500',
+                    }}
+                    _hover={{
+                        bg: 'gray.50',
+                        _checked: {
+                            bg: 'blue.500',
+                        },
+                    }}
+                    _invalid={{
+                        borderColor: 'red.500',
+                    }}
+                    _focus={{
+                        boxShadow: 'outline',
+                    }}
+                    px={2}
+                    py={1}
+                    textAlign="center"
+                    {...checkboxProps}
+                    {...props}
+                >
+                    {props.children}
+                </Box>
+            </Box>
+        )
+    }
+)
