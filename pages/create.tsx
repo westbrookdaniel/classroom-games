@@ -94,7 +94,7 @@ const Create: NextPage = () => {
                             required: 'Paragraph is required',
                         })}
                         label="Enter your paragraph"
-                        helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation.`}
+                        helper={`Put the correct spelling in curly braces after the incorrect word: "I like bred{bread}". Corrections (words inside curly braces) can't contain spaces or punctuation. Put punctuation corrections inside square braces: "What time is it.[?]"`}
                         error={errors.paragraph?.message}
                         autoComplete="off"
                         props={{ formControlProps: { isRequired: true } }}

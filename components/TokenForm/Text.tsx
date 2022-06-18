@@ -4,24 +4,17 @@ import {
     ButtonGroup,
     Button,
     useToast,
-    HStack,
 } from '@chakra-ui/react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { TokenState, useStore } from '../store'
-import { FormInput } from './Form'
-
-interface FormProps {
-    onCancel: () => void
-    onClose: () => void
-    token: TokenState
-    initialRef: React.RefObject<HTMLInputElement>
-}
+import { FormProps } from '.'
+import { useStore } from '../../store'
+import { FormInput } from '../Form'
 
 interface FormValues {
     guess: string
 }
 
-export function TokenForm({ onClose, onCancel, token, initialRef }: FormProps) {
+export function TextForm({ onClose, onCancel, token, initialRef }: FormProps) {
     const setTokenGuess = useStore((s) => s.setTokenGuess)
     const toast = useToast({ position: 'top' })
 

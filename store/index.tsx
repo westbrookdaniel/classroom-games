@@ -5,10 +5,15 @@ import { createTokensFromParagraph } from '../utils/createTokensFromParagraph'
 export interface TokenState {
     id: number
     value: string
-    guess: string[]
-    answer?: string
     isCorrect: boolean
     hasSelected: boolean
+    type: 'text' | 'punct' | 'none'
+    guess: string[]
+    answer?: string
+    punct?: {
+        value: string
+        answer: string
+    }
 }
 
 export interface State {

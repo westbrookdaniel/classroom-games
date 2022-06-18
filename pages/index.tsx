@@ -10,7 +10,7 @@ import { useStore } from '../store'
 useStore
     .getState()
     .setParagraph(
-        'This is a very nomal{normal} looking paragraph, or so I believe.'
+        'This is a very nomal{normal} looking paragraph.[,] or so I believe.'
     )
 
 const Home: NextPage = () => {

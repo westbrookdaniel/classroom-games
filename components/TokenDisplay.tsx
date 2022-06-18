@@ -9,11 +9,16 @@ interface Props {
 }
 
 export const TokenDisplay = React.forwardRef<HTMLParagraphElement, Props>(
-    function TokenDisplay({ token, onClick, isDisabled }, ref) {
+    function TokenDisplay(
+        { token, onClick, isDisabled: isExternalDisabled },
+        ref
+    ) {
         const theme = useTheme()
         const lightGray = `${theme.colors.gray[200]}90`
         const lightGreen = `${theme.colors.green[200]}90`
         const lightRed = `${theme.colors.red[200]}90`
+
+        const isDisabled = isExternalDisabled || token.type === 'none'
 
         if (token.isCorrect) {
             return (
