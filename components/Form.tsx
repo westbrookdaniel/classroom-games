@@ -185,20 +185,24 @@ interface FormRadioProps {
 export const FormRadioCard = React.forwardRef<
     HTMLInputElement,
     FormElementsProps & RadioProps & FormRadioProps
->(function FormRadioCard({
-    label,
-    helper,
-    error,
-    name,
-    props,
-    value,
-    options,
-    fieldsetProps,
-    defaultValue,
-    onChange,
-    setValue,
-    ...rest
-}) {
+>(function FormRadioCard(
+    {
+        label,
+        helper,
+        error,
+        name,
+        props,
+        value,
+        options,
+        fieldsetProps,
+        defaultValue,
+        onChange,
+        setValue,
+        ...rest
+    },
+    // We don't use this ref
+    ref
+) {
     const { getRootProps, getRadioProps } = useRadioGroup({
         name,
         defaultValue,

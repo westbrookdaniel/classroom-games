@@ -1,17 +1,19 @@
 import * as React from 'react'
-import { Portal, Button } from '@chakra-ui/react'
+import { Portal, Button, HStack } from '@chakra-ui/react'
 import { Modal } from './Modal'
 import useStoreAnswers from '../utils/useStoreAnswers'
 import ReactConfetti from 'react-confetti'
+import { useStore } from '../store'
 
 export default function SuccessModal() {
+    const restart = useStore((s) => s.restart)
     const { isAllCorrect } = useStoreAnswers()
 
     const [hasWon, setHasWon] = React.useState(false)
 
     React.useEffect(() => {
         if (!isAllCorrect) return
-        setTimeout(() => setHasWon(true), 1800)
+        setTimeout(() => setHasWon(true), 1000)
     }, [isAllCorrect])
 
     return (
@@ -25,11 +27,27 @@ export default function SuccessModal() {
                             <ReactConfetti />
                         </Portal>
                     ) : null}
-                    <Button variant="outline" onClick={onClose}>
-                        Close
-                    </Button>
+                    <HStack>
+                        <Button variant="outline" onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button
+                            colorScheme="green"
+                            onClick={() => {
+                                restart()
+                                onClose()
+                                setHasWon(false)
+                            }}
+                        >
+                            Restart
+                        </Button>
+                    </HStack>
                 </>
             )}
-        />
+        >
+            {({ onOpen }) =>
+                hasWon ? <Button onClick={onOpen}>Show Results</Button> : null
+            }
+        </Modal>
     )
 }
