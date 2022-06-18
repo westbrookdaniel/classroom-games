@@ -1,5 +1,6 @@
 import { TokenState } from '../../store'
-import { TextForm } from './Text'
+import { PunctForm } from './PunctForm'
+import { TextForm } from './TextForm'
 
 export interface FormProps {
     onCancel: () => void
@@ -11,8 +12,9 @@ export interface FormProps {
 export function TokenForm({ token, ...props }: FormProps) {
     switch (token.type) {
         case 'text':
-        case 'punct':
             return <TextForm token={token} {...props} />
+        case 'punct':
+            return <PunctForm token={token} {...props} />
         default:
             throw new Error(
                 `Form for token of type "${token.type}" could not be found`

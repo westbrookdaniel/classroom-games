@@ -17,6 +17,10 @@ import {
     HStack,
     StyleProps,
     ChakraProps,
+    RadioGroup,
+    StackProps,
+    Box,
+    Flex,
 } from '@chakra-ui/react'
 
 type Stylable = StyleProps & ChakraProps
@@ -160,39 +164,62 @@ export const FormCheckbox = React.forwardRef<
     )
 })
 
+interface FormRadioProps {
+    options: {
+        label: string
+        value: string
+        ref?: React.ForwardedRef<HTMLInputElement>
+    }[]
+    fieldsetProps?: StackProps
+}
+
 export const FormRadio = React.forwardRef<
     HTMLInputElement,
-    FormElementsProps & RadioProps
+    FormElementsProps & RadioProps & FormRadioProps
 >(function FormRadio(
-    { label, helper, error, name, props, value, ...rest },
+    {
+        label,
+        helper,
+        error,
+        name,
+        props,
+        value,
+        options,
+        fieldsetProps,
+        ...rest
+    },
     ref
 ) {
     return (
-        <Stack
-            as={FormControl}
-            isInvalid={!!error}
-            {...props?.formControlProps}
+        <FormElements
+            helper={helper}
+            error={error}
+            label={label}
+            name={name}
+            props={props}
         >
-            <HStack alignItems="center">
-                <Radio
-                    id={`${value}`}
-                    name={name}
-                    aria-invalid={error ? true : undefined}
-                    aria-describedby={`${name}-error`}
-                    value={value}
-                    ref={ref}
-                    {...rest}
-                />
-                {label || helper ? (
-                    <FormLabel
-                        userSelect="none"
-                        label={label}
-                        name={`${value}`}
-                        {...props?.labelProps}
-                    />
-                ) : null}
-            </HStack>
-            <FormError error={error} {...props?.errorProps} />
-        </Stack>
+            <RadioGroup
+                id={name}
+                name={name}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={`${name}-error`}
+            >
+                <Stack as="fieldset" {...fieldsetProps}>
+                    {options.map((option, i) => {
+                        return (
+                            <Radio
+                                key={option.value}
+                                id={`${name}-${option.value}`}
+                                value={option.value}
+                                {...rest}
+                                ref={option.ref || ref}
+                            >
+                                {option.label}
+                            </Radio>
+                        )
+                    })}
+                </Stack>
+            </RadioGroup>
+        </FormElements>
     )
 })
