@@ -26,7 +26,9 @@ export function createTokensFromParagraph(paragraph: string) {
                 ...defaultState,
                 id,
                 type: 'punct',
-                value: wrongValue,
+                value: wrongValue.endsWith('_')
+                    ? wrongValue.slice(0, -1)
+                    : wrongValue,
                 answer,
                 punct,
             }
