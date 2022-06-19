@@ -1,14 +1,9 @@
 import * as React from 'react'
-import {
-    Tooltip as ChakraTooltip,
-    TooltipProps,
-    useBreakpointValue,
-} from '@chakra-ui/react'
+import { Tooltip as ChakraTooltip, TooltipProps } from '@chakra-ui/react'
 
 export type { TooltipProps }
 
 export function Tooltip({ isDisabled, ...props }: TooltipProps) {
-    const isMobile = true
     return (
         <ChakraTooltip
             closeOnClick={false}

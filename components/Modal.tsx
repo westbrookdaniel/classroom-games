@@ -8,18 +8,18 @@ import {
     ModalHeader,
     ModalOverlay,
     useDisclosure,
+    UseDisclosureProps,
 } from '@chakra-ui/react'
 
 type ChildrenFn = (
     disclosure: ReturnType<typeof useDisclosure>
 ) => React.ReactNode
 
-interface Props {
+interface Props extends UseDisclosureProps {
     children?: ChildrenFn | React.ReactNode
     body?: ChildrenFn | React.ReactNode
     header?: ChildrenFn | React.ReactNode
     footer?: ChildrenFn | React.ReactNode
-    isOpen?: boolean
     openWhen?: boolean
 }
 
@@ -35,17 +35,15 @@ export function Modal({
     body,
     footer,
     children,
-    isOpen: externalIsOpen,
     openWhen,
+    ...disclosureProps
 }: Props) {
-    const disclosure = useDisclosure({ isOpen: externalIsOpen })
+    const disclosure = useDisclosure(disclosureProps)
     const { isOpen, onOpen, onClose } = disclosure
 
     React.useEffect(() => {
         if (openWhen) onOpen()
     }, [onOpen, openWhen])
-
-    const zIndexAbovePopover = 1600
 
     return (
         <>

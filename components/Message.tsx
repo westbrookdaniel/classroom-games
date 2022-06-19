@@ -7,7 +7,7 @@ export default function ParagraphGame() {
     const { answers } = useStoreAnswers()
 
     return (
-        <VStack color="gray.500" align="center">
+        <VStack color="gray.500" align="center" textAlign="center">
             <Text fontSize="lg">
                 There{' '}
                 {plural(

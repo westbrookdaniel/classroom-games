@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { PopoverTrigger, Text } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { TokenState } from '../store'
 import { TokenDisplay } from './TokenDisplay'
-import { TokenFormPopover } from './TokenFormPopover'
+import { TokenFormOverlay } from './TokenFormOverlay'
 
 interface TokenWithForm {
     token: TokenState
@@ -12,10 +12,10 @@ interface TokenWithForm {
 
 export function TokenWithForm({ token, isDisabled, onClick }: TokenWithForm) {
     return (
-        <TokenFormPopover token={token}>
-            {({ onToggle }) => (
+        <TokenFormOverlay token={token}>
+            {({ onToggle, Trigger }) => (
                 <Token token={token}>
-                    <PopoverTrigger>
+                    <Trigger>
                         <TokenDisplay
                             isDisabled={isDisabled}
                             onClick={() => {
@@ -24,10 +24,10 @@ export function TokenWithForm({ token, isDisabled, onClick }: TokenWithForm) {
                             }}
                             token={token}
                         />
-                    </PopoverTrigger>
+                    </Trigger>
                 </Token>
             )}
-        </TokenFormPopover>
+        </TokenFormOverlay>
     )
 }
 
